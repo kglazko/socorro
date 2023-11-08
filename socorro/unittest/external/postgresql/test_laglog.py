@@ -3,7 +3,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import datetime
-import random
 
 from nose.plugins.attrib import attr
 from nose.tools import eq_, ok_
@@ -12,6 +11,7 @@ from socorro.external.postgresql.laglog import LagLog
 from socorro.lib.util import DotDict
 
 from unittestbase import PostgreSQLTestCase
+import secrets
 
 
 @attr(integration='postgres')  # for nosetests
@@ -32,9 +32,9 @@ class IntegrationTestLagLog(PostgreSQLTestCase):
             moment = now - datetime.timedelta(seconds=(points - i) * 60)
             for name in names:
                 if name == names[0]:  # first one
-                    bytes = random.randint(180, 500 - i)
+                    bytes = secrets.SystemRandom().randint(180, 500 - i)
                 else:
-                    bytes = random.randint(170 + i * 10, 300 + i * 12)
+                    bytes = secrets.SystemRandom().randint(170 + i * 10, 300 + i * 12)
                 sqls.append(
                     "INSERT INTO lag_log "
                     "(replica_name, moment, lag, master)"
