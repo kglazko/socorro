@@ -2,7 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import random
 import datetime
 from nose.plugins.attrib import attr
 from nose.tools import eq_, ok_, assert_raises
@@ -17,6 +16,7 @@ from socorro.unittest.testbase import TestCase
 from socorro.external.postgresql.connection_context import ConnectionContext
 
 from unittestbase import PostgreSQLTestCase
+import secrets
 
 
 # =============================================================================
@@ -1072,7 +1072,7 @@ class IntegrationTestCrashes(PostgreSQLTestCase):
 
         j = 100  # some number so it's not used by other tests or fixtures
 
-        rand = lambda: random.randint(0, 10)
+        rand = lambda: secrets.SystemRandom().randint(0, 10)
         exploit_values = []
         signature_values = []
         for day in day_before_yesterday, yesterday_date, self.now:
