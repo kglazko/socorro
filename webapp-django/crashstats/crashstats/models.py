@@ -182,7 +182,7 @@ def memoize(function):
         def get_cached_result(key, instance, stringified_args):
             result = cache.get(key)
             if result is not None:
-                logger.debug("CACHE HIT %s" % stringified_args)
+                logger.debug("CACHE HIT %s", stringified_args)
                 return result
 
             # Didn't find key in middleware_cache, so try filecache
@@ -194,7 +194,7 @@ def memoize(function):
                     logger.debug("CACHE FILE TOO OLD")
                     os.remove(cache_file)
                 else:
-                    logger.debug("CACHE FILE HIT %s" % stringified_args)
+                    logger.debug("CACHE FILE HIT %s", stringified_args)
                     delete_cache_file = False
                     with open(cache_file) as f:
                         if instance.expect_json:
@@ -203,10 +203,7 @@ def memoize(function):
                             except ValueError:
                                 logger.warn(
                                     "%s is not a valid JSON file and will "
-                                    "be deleted" % (
-                                        cache_file,
-                                    )
-                                )
+                                    "be deleted", cache_file)
                                 delete_cache_file = True
                         else:
                             return f.read()
@@ -327,7 +324,7 @@ class SocorroCommon(object):
             if not refresh_cache:
                 result = cache.get(cache_key)
                 if result is not None:
-                    logger.debug("CACHE HIT %s" % url)
+                    logger.debug("CACHE HIT %s", url)
                     return result, True
 
                 # not in the memcache/locmem but is it in cache files?
@@ -369,7 +366,7 @@ class SocorroCommon(object):
                             logger.debug("CACHE FILE TOO OLD")
                             os.remove(cache_file)
                         else:
-                            logger.debug("CACHE FILE HIT %s" % url)
+                            logger.debug("CACHE FILE HIT %s", url)
                             delete_cache_file = False
                             with open(cache_file) as f:
                                 if expect_json:
@@ -378,10 +375,7 @@ class SocorroCommon(object):
                                     except ValueError:
                                         logger.warn(
                                             "%s is not a valid JSON file and "
-                                            "will be deleted" % (
-                                                cache_file,
-                                            ),
-                                            exc_info=True
+                                            "will be deleted", cache_file, exc_info=True
                                         )
                                         delete_cache_file = True
                                 else:
@@ -391,16 +385,16 @@ class SocorroCommon(object):
 
         if method == 'post':
             request_method = requests.post
-            logger.info("POSTING TO %s" % url)
+            logger.info("POSTING TO %s", url)
         elif method == 'get':
             request_method = requests.get
-            logger.info("FETCHING %s" % url)
+            logger.info("FETCHING %s", url)
         elif method == 'put':
             request_method = requests.put
-            logger.info("PUTTING TO %s" % url)
+            logger.info("PUTTING TO %s", url)
         elif method == 'delete':
             request_method = requests.delete
-            logger.info("DELETING ON %s" % url)
+            logger.info("DELETING ON %s", url)
         else:
             raise ValueError(method)
 

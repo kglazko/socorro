@@ -89,7 +89,7 @@ class ReprocessCrashlistApp(App):
                     body=uuid,
                     properties=pika.BasicProperties(delivery_mode=2)
                 )
-                logging.debug('submitted %s' % uuid)
+                logging.debug('submitted %s', uuid)
 
         self.connection.close()
 
