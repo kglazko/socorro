@@ -18,6 +18,7 @@ from crontabber.mixins import (
 )
 from socorro.database.cachedIdAccess import IdCache
 from socorro.lib.util import DotDict
+from security import safe_command
 
 SQL = """
 select
@@ -200,8 +201,7 @@ class DailyURLCronApp(BaseCronApp):
             user += '@'
 
         command = 'scp "%s" "%s%s:%s"' % (file_path, user, server, location)
-        proc = subprocess.Popen(
-            command,
+        proc = safe_command.run(subprocess.Popen, command,
             shell=True,
             stdout=subprocess.PIPE,
             stdin=subprocess.PIPE,
@@ -215,8 +215,7 @@ class DailyURLCronApp(BaseCronApp):
 
         if ssh_command:
             command = 'ssh "%s%s" "%s"' % (user, server, ssh_command)
-            proc = subprocess.Popen(
-                command,
+            proc = safe_command.run(subprocess.Popen, command,
                 shell=True,
                 stdout=subprocess.PIPE,
                 stdin=subprocess.PIPE,
