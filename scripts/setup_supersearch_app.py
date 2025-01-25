@@ -56,10 +56,8 @@ class SetupSuperSearchApp(generic_app.App):
             self.config.elasticsearch
         )
         index_creator.create_index('socorro', None)
-
-        # Load the initial data set.
-        data_file = open(self.config.supersearch_fields_file, 'r')
-        all_fields = json.loads(data_file.read())
+        with open(self.config.supersearch_fields_file, 'r') as data_file:
+            all_fields = json.loads(data_file.read())
 
         # Index the data.
         es_connection = index_creator.es
