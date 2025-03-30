@@ -1,5 +1,4 @@
 import datetime
-import random
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -9,6 +8,7 @@ from django.core.cache import cache
 from django_browserid.views import Verify
 
 from crashstats.crashstats.utils import json_view
+import secrets
 
 
 class CustomBrowserIDVerify(Verify):
@@ -34,9 +34,9 @@ def debug_login(request):
     if request.GET.get('test-cookie'):
         return {'cookie_value': int(request.COOKIES.get('cookie_value', 0))}
 
-    cache_value = random.randint(10, 100)
+    cache_value = secrets.SystemRandom().randint(10, 100)
     cache.set('cache_value', cache_value, 10)
-    cookie_value = random.randint(10, 100)
+    cookie_value = secrets.SystemRandom().randint(10, 100)
     context = {
         'SESSION_COOKIE_SECURE': settings.SESSION_COOKIE_SECURE,
         'cache_setting': settings.CACHES['default']['BACKEND'].split('.')[-1],

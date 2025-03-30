@@ -4,11 +4,11 @@
 
 import types
 import re
-import random
 
 from configman import Namespace, RequiredConfig
 
 from socorro.lib.ver_tools import normalize
+import secrets
 
 Compiled_Regular_Expression_Type = type(re.compile(''))
 
@@ -163,7 +163,7 @@ class LegacyThrottler(RequiredConfig):
             if throttle_match:  # we've got a condition match - apply percent
                 if percentage is None:
                     return None, None
-                random_real_percent = random.random() * 100.0
+                random_real_percent = secrets.SystemRandom().random() * 100.0
                 return random_real_percent > percentage, percentage
         # nothing matched, reject
         return True, 0

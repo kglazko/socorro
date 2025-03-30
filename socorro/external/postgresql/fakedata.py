@@ -8,8 +8,8 @@
 
 import datetime
 import uuid
-import random
 import json
+import secrets
 
 crash_ids = []
 
@@ -29,7 +29,7 @@ def date_range(start_date, end_date, delta=None):
 def weighted_choice(items):
     """items is a list of tuples in the form (item, weight)"""
     weight_total = sum((item[1] for item in items))
-    n = random.uniform(0, weight_total)
+    n = secrets.SystemRandom().uniform(0, weight_total)
     for item, weight in items:
         if n < weight:
             return item
@@ -41,7 +41,7 @@ class BaseTable(object):
     def __init__(self, days=None):
 
         # use a known seed for PRNG to get deterministic behavior.
-        random.seed(5)
+        secrets.SystemRandom().seed(5)
 
         self.days = days or 7
         self.end_date = datetime.datetime.utcnow()
@@ -335,12 +335,12 @@ class BaseTable(object):
 
         # URL and probability.
         self.urls = [
-            ('%s/%s' % ('http://example.com', random.getrandbits(16)), 0.7)
+            ('%s/%s' % ('http://example.com', secrets.SystemRandom().getrandbits(16)), 0.7)
             for x in range(100)]
 
         # email address and probability.
         self.email_addresses = [
-            ('socorro-%s@%s' % (random.getrandbits(16), 'restmail.net'), 0.01)
+            ('socorro-%s@%s' % (secrets.SystemRandom().getrandbits(16), 'restmail.net'), 0.01)
             for x in range(10)]
         self.email_addresses.append((None, 0.9))
 
@@ -366,7 +366,7 @@ class BaseTable(object):
     # this uses random instead of simply using uuid to get deterministic
     # behavior, since random is seeded
     def generate_crashid(self, timestamp):
-        crashid = str(uuid.UUID(int=random.getrandbits(128)))
+        crashid = str(uuid.UUID(int=secrets.SystemRandom().getrandbits(128)))
         depth = 0
         final_crashid = "%s%d%02d%02d%02d" % (crashid[:-7],
                                               depth,
@@ -705,12 +705,12 @@ class RawCrashes(BaseTable):
             },
         ]
         for crashid, date_processed, in crash_ids:
-            android_device = random.choice(android)
+            android_device = secrets.choice(android)
             raw_crash = {
                 "uuid": crashid,
                 "IsGarbageCollecting": "1",
-                "AdapterVendorID": random.choice(vendors),
-                "AdapterDeviceID": random.choice(devices),
+                "AdapterVendorID": secrets.choice(vendors),
+                "AdapterDeviceID": secrets.choice(devices),
                 "Android_CPU_ABI": android_device['cpu_abi'],
                 "Android_Manufacturer": android_device['manufacturer'],
                 "Android_Model": android_device['model'],
