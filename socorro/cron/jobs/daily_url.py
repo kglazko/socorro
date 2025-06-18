@@ -202,8 +202,7 @@ class DailyURLCronApp(BaseCronApp):
         command = 'scp "%s" "%s%s:%s"' % (file_path, user, server, location)
         proc = subprocess.Popen(
             command,
-            shell=True,
-            stdout=subprocess.PIPE,
+            shell=False, stdout=subprocess.PIPE,
             stdin=subprocess.PIPE,
             stderr=subprocess.PIPE
         )
@@ -217,8 +216,7 @@ class DailyURLCronApp(BaseCronApp):
             command = 'ssh "%s%s" "%s"' % (user, server, ssh_command)
             proc = subprocess.Popen(
                 command,
-                shell=True,
-                stdout=subprocess.PIPE,
+                shell=False, stdout=subprocess.PIPE,
                 stdin=subprocess.PIPE,
                 stderr=subprocess.PIPE
             )
