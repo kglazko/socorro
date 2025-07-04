@@ -3,7 +3,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import mock
-import random
 import uuid
 from distutils.version import LooseVersion
 from elasticsearch.helpers import bulk
@@ -15,6 +14,7 @@ from nose import SkipTest
 from socorro.external.es.index_creator import IndexCreator
 from socorro.middleware.middleware_app import MiddlewareApp
 from socorro.unittest.testbase import TestCase
+import secrets
 
 
 DEFAULT_VALUES = {
@@ -859,7 +859,7 @@ class ElasticsearchTestCase(TestCase):
 
     def index_crash(self, processed_crash, raw_crash=None, crash_id=None):
         if crash_id is None:
-            crash_id = str(uuid.UUID(int=random.getrandbits(128)))
+            crash_id = str(uuid.UUID(int=secrets.SystemRandom().getrandbits(128)))
 
         if raw_crash is None:
             raw_crash = {}
@@ -888,7 +888,7 @@ class ElasticsearchTestCase(TestCase):
 
         actions = []
         for i in range(number):
-            crash_id = str(uuid.UUID(int=random.getrandbits(128)))
+            crash_id = str(uuid.UUID(int=secrets.SystemRandom().getrandbits(128)))
 
             if loop_field is not None:
                 processed_copy = processed_crash.copy()

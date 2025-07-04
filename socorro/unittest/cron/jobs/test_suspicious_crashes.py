@@ -3,7 +3,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import datetime
-import random
 
 from nose.plugins.attrib import attr
 from nose.tools import eq_
@@ -15,6 +14,7 @@ from socorro.unittest.cron.jobs.base import IntegrationTestBase
 from socorro.unittest.cron.setup_configman import (
     get_config_manager_for_crontabber,
 )
+import secrets
 
 SQL_INSERT = """
 INSERT INTO
@@ -57,7 +57,7 @@ class TestSuspiciousCrashAnalysisIntegration(IntegrationTestBase):
         # we want to generate 10 crashes for each day, +/- 1 crashes.
         uuid = 1
         while current < now:
-            for i in xrange(random.randint(9, 11)):
+            for i in xrange(secrets.SystemRandom().randint(9, 11)):
                 sql = SQL_INSERT.format(uuid=uuid,
                                         signature=sig_id,
                                         date=current.strftime('%Y-%m-%d'))

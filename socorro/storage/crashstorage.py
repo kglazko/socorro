@@ -5,7 +5,6 @@
 # Temporary adaptors from old code to new code
 
 import re
-import random
 import threading
 
 import socorro.lib.ver_tools as vtl
@@ -22,6 +21,7 @@ from socorro.database.transaction_executor import \
      TransactionExecutorWithLimitedBackoff
 
 from configman.dotdict import DotDict
+import secrets
 
 compiledRegularExpressionType = type(re.compile(''))
 functionType = type(lambda x: x)
@@ -261,7 +261,7 @@ class LegacyThrottler(object):
             if throttleMatch:  # condition match, apply the throttle percentage
                 if percentage is None:
                     return None
-                randomRealPercent = random.random() * 100.0
+                randomRealPercent = secrets.SystemRandom().random() * 100.0
                 return randomRealPercent > percentage
         # nothing matched, reject
         return True

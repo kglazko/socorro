@@ -4,7 +4,6 @@ import shutil
 import tempfile
 import datetime
 import time
-import random
 
 import mock
 import requests
@@ -15,6 +14,7 @@ from django.conf import settings
 
 from crashstats.base.tests.testbase import DjangoTestCase, TestCase
 from crashstats.crashstats import models
+import secrets
 
 
 class Response(object):
@@ -1715,7 +1715,7 @@ class TestModelsWithFileCaching(TestCase):
             return Response('{"bugs": [{"product": "mozilla.org"}]}')
 
         rget.side_effect = mocked_get
-        bugnumbers = [str(random.randint(10000, 100000)) for __ in range(100)]
+        bugnumbers = [str(secrets.SystemRandom().randint(10000, 100000)) for __ in range(100)]
         info = api.get(bugnumbers, 'product')
         ok_(info)
 
